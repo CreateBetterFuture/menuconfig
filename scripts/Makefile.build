@@ -1,0 +1,38 @@
+# SPDX-License-Identifier: GPL-2.0
+# ==========================================================================
+# Building
+# ==========================================================================
+src := $(obj)
+
+PHONY := __build
+__build:
+
+always-y :=
+
+include $(srctree)/scripts/Kbuild.include
+
+# The filename Kbuild has precedence over Makefile
+kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+kbuild-file := $(if $(wildcard $(kbuild-dir)/Kbuild),$(kbuild-dir)/Kbuild,$(kbuild-dir)/Makefile)
+include $(kbuild-file)
+
+include ./scripts/Makefile.lib
+
+# Do not include hostprogs rules unless needed.
+# $(sort ...) is used here to remove duplicated words and excessive spaces.
+hostprogs := $(sort $(hostprogs))
+ifneq ($(hostprogs),)
+include $(srctree)/scripts/Makefile.host
+endif
+
+
+__build: $(always-y)
+        @:
+
+# Add FORCE to the prequisites of a target to force it to be always rebuilt.
+# ---------------------------------------------------------------------------
+
+PHONY += FORCE
+
+FORCE:
+
