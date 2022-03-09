@@ -1,4 +1,3 @@
-
 # Beautify output
 # ---------------------------------------------------------------------------
 #
@@ -54,6 +53,11 @@ export quiet Q KBUILD_VERBOSE
 srctree := .
 HOSTCC  = gcc
 export srctree HOSTCC
+
+# Make variables (CC, etc...)
+LEX             = flex
+YACC            = bison
+export LEX YACC
 
 include $(srctree)/scripts/Kbuild.include
 
